@@ -1,4 +1,7 @@
+import datetime
+
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 
@@ -14,3 +17,10 @@ class Attendee(AbstractUser):
 class Biometrics(models.Model):
     owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)
     facial_data = models.BinaryField()
+
+
+class Event(models.Model):
+    name = models.CharField(max_length=200, blank=True)
+    date = models.DateTimeField()
+    attendees = models.ManyToManyField(Attendee)
+
