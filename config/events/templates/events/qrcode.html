@@ -7,6 +7,6 @@
 <body>
 <h1>{{ event.name }}</h1>
 {% load qr_code %}
-{% qr_from_text event.uuid size="H" %}
+{% qr_from_text (url 'events:attend' question.id) size="H" %}
 </body>
 </html>

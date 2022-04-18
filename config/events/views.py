@@ -35,6 +35,6 @@ class QRCodeView(generic.DetailView):
     template_name = 'events/qrcode.html'
 
 
-# class AttendView(generic.DetailView):
-#     model = Event
-#     template_name = 'events/attend.html'
+class AttendView(generic.DetailView):
+    model = Event
+    template_name = 'events/attend.html'
