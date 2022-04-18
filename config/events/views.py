@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from .forms import EventForm
@@ -7,10 +9,15 @@ import uuid
 
 
 # Create your views here.
-# class CreateEventView(generic.FormView):
-def create_event(request):
-    form = EventForm()
+class NewEventView(generic.FormView):
+    template_name = 'events/new-event.html'
+    form_class = EventForm
+    #context = {'form':form}
+    #return render(request, template_name, context)
 
+
+def create_event(request):
+    print("GOT HERE")
     if request.method == 'POST':
         #print(request.POST)
         event = Event(uuid=str(uuid.uuid4()), datetime=timezone.now())
@@ -20,11 +27,7 @@ def create_event(request):
         if form.is_valid():
             #print(form)
             form.save()
-
-    context = {'form':form}
-    template_name = 'events/create.html'
-
-    return render(request, template_name, context)
+            return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
 
 
 class QRCodeView(generic.DetailView):

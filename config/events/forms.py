@@ -6,4 +6,3 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name']
-        #exclude = ['uuid']
