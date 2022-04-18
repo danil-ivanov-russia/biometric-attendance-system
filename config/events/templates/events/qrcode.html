@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>{{ event.name }}</h1>
+{% load qr_code %}
+{% qr_from_text "Hello World!" size="T" %}
+</body>
+</html>

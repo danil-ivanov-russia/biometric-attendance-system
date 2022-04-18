@@ -26,3 +26,12 @@ def create_event(request):
 
     return render(request, template_name, context)
 
+
+class QRCodeView(generic.DetailView):
+    model = Event
+    template_name = 'events/qrcode.html'
+
+
+# class AttendView(generic.DetailView):
+#     model = Event
+#     template_name = 'events/attend.html'
