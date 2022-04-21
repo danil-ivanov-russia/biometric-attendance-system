@@ -7,6 +7,6 @@
 <body>
 <h1>{{ event.name }}</h1>
 {% load qr_code %}
-{% qr_from_text (url 'events:attend' question.id) size="H" %}
+{% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}
 </body>
 </html>

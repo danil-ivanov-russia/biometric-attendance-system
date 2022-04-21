@@ -20,8 +20,7 @@ def create_event(request):
     print("GOT HERE")
     if request.method == 'POST':
         #print(request.POST)
-        event = Event(uuid=str(uuid.uuid4()), datetime=timezone.now())
-        print(event.uuid)
+        event = Event(slug=str(uuid.uuid4()), datetime=timezone.now())
         form = EventForm(request.POST, instance=event)
         #form = EventForm(request.POST, initial={'uuid': str(uuid.uuid4())})
         if form.is_valid():

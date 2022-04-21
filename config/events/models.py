@@ -2,6 +2,8 @@ import datetime
 import uuid
 
 from django.db import models
+from django.http import request
+from django.urls import reverse
 from django.utils import timezone
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
@@ -23,10 +25,13 @@ class Biometrics(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=200, blank=True)
-    uuid = models.CharField(max_length=36, blank=True)
+    slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
     # attendees = models.ManyToManyField(Attendee)
 
     def __str__(self):
         return self.name
+
+    def get_attendance_url(self):
+        return reverse('events:attend', kwargs={"slug": self.slug})
 
