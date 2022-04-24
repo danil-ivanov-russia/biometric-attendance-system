@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<h1>{{ event.name }}</h1>
+<h1>{{ event.slug }}</h1>
 
-<form action="{% url 'events:test' 1 %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Загрузить фото">

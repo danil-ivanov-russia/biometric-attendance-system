@@ -38,3 +38,6 @@ class Event(models.Model):
 
 class FaceImage(models.Model):
     image = models.ImageField()
+
+    def get_metadata(self):
+        pass
