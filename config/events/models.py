@@ -1,11 +1,13 @@
 import datetime
 import uuid
 
+from django.conf import settings
 from django.db import models
 from django.http import request
 from django.urls import reverse
 from django.utils import timezone
-from django.utils import timezone
+from PIL import Image
+from PIL.ExifTags import TAGS
 from django.contrib.auth.models import AbstractUser
 
 
@@ -39,5 +41,20 @@ class Event(models.Model):
 class FaceImage(models.Model):
     image = models.ImageField()
 
+    def __delete__(self, instance):
+        storage, path = self.image.storage, self.image.path
+        storage.delete(path)
+        super(FaceImage, self).__delete__()
+
     def get_metadata(self):
-        pass
+        raw_image = Image.open(self.image.path)
+        exif_data = raw_image.getexif()
+        for tag_id in exif_data:
+            # get the tag name, instead of human unreadable tag id
+            tag = TAGS.get(tag_id, tag_id)
+            data = exif_data.get(tag_id)
+            # decode bytes
+            if isinstance(data, bytes):
+                data = data.decode()
+            print(f"{tag:25}: {data}")
+

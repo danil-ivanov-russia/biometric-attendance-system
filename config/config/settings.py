@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,6 +24,12 @@ SECRET_KEY = 'django-insecure-80uau$t3y%(&ma4f@=96mrp#0$qji9rga$qu)1n8gr=s279w1d
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 ALLOWED_HOSTS = ['192.168.0.108', '127.0.0.1']
 

@@ -61,9 +61,14 @@ def upload_attendance_photo(request, slug):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            image = form.cleaned_data.get('image')
-            print(image)
-            pass
+            form.save()
+
+            image_instance = form.instance
+            image_instance.get_metadata()
+            image_instance.delete()
+            # image = form.cleaned_data.get('image')
+            # print(image)
+            # pass
             #return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(19,)))
 
