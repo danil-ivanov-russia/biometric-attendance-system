@@ -41,10 +41,11 @@ class Event(models.Model):
 class FaceImage(models.Model):
     image = models.ImageField()
 
-    def __delete__(self, instance):
-        storage, path = self.image.storage, self.image.path
-        storage.delete(path)
-        super(FaceImage, self).__delete__()
+    def delete(self, using=None, keep_parents=False):
+        self.image.delete(save=False)
+        #storage, path = self.image.storage, self.image.path
+        #storage.delete(path)
+        super().delete()
 
     def get_metadata(self):
         raw_image = Image.open(self.image.path)
