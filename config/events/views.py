@@ -28,13 +28,6 @@ class QRCodeView(generic.DetailView):
     template_name = 'events/qrcode.html'
 
 
-def construct_attendance_page(request):
-    slug = request.GET.get('slug', '')
-    print(slug)
-    event = get_object_or_404(Event, slug=slug)
-    return HttpResponseRedirect(reverse('events:attend', args=(event.slug,)))
-
-
 class AttendView(generic.DetailView):
     model = Event
     form_class = ImageForm

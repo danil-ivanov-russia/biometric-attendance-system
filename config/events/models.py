@@ -32,8 +32,8 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_attendance_url(self):
-    #     return reverse('events:attend', kwargs={"slug": self.slug})
+    def get_attendance_url(self):
+        return reverse('events:attend', kwargs={"slug": self.slug})
 
 
 class FaceImage(models.Model):
