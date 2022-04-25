@@ -55,20 +55,15 @@ class AttendView(generic.edit.FormMixin, generic.DetailView):
 
 
 def upload_attendance_photo(request, slug):
-    #event = get_object_or_404(Event, slug=event_slug)
-    print(slug)
     event = get_object_or_404(Event, slug=slug)
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-
             image_instance = form.instance
-            image_instance.get_metadata()
+            image_datetime = image_instance.get_image_datetime()
+            print(image_datetime)
             image_instance.delete()
-            # image = form.cleaned_data.get('image')
-            # print(image)
-            # pass
             #return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(19,)))
 

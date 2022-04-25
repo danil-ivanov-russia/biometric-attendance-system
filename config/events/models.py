@@ -43,19 +43,19 @@ class FaceImage(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         self.image.delete(save=False)
-        #storage, path = self.image.storage, self.image.path
-        #storage.delete(path)
         super().delete()
 
-    def get_metadata(self):
+    def get_image_datetime(self):
         raw_image = Image.open(self.image.path)
         exif_data = raw_image.getexif()
+        datetime_object = None
         for tag_id in exif_data:
-            # get the tag name, instead of human unreadable tag id
             tag = TAGS.get(tag_id, tag_id)
-            data = exif_data.get(tag_id)
-            # decode bytes
-            if isinstance(data, bytes):
-                data = data.decode()
-            print(f"{tag:25}: {data}")
+            if tag == "DateTime":
+                data = exif_data.get(tag_id)
+                if isinstance(data, bytes):
+                    data = data.decode()
+                datetime_object = datetime.datetime.strptime(data, '%Y:%m:%d %H:%M:%S')
+                break
+        return datetime_object
 
