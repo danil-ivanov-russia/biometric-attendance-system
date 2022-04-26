@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 
 from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event
@@ -22,13 +24,40 @@ def create_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            #messages.success(request, "Registration successful.")
+            # messages.success(request, "Registration successful.")
             return HttpResponseRedirect(reverse('events:new-event'))
-            #return redirect("main:homepage")
-        #messages.error(request, "Unsuccessful registration. Invalid information.")
+            # return redirect("main:homepage")
+        # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()
-    #return render(request=request, template_name="events/register.html", context={"register_form": form})
+    # return render(request=request, template_name="events/register.html", context={"register_form": form})
     return HttpResponseRedirect(reverse('events:register'))
+
+
+class LoginView(generic.FormView):
+    template_name = 'events/login.html'
+    form_class = AuthenticationForm
+
+
+def authenticate_user(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return HttpResponseRedirect(reverse('events:new-event'))
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+            # return redirect("main:homepage")
+        # messages.error(request, "Unsuccessful registration. Invalid information.")
+    # form = NewUserForm()
+    # return render(request=request, template_name="events/register.html", context={"register_form": form})
+    return HttpResponseRedirect(reverse('events:login'))
 
 
 class NewEventView(generic.FormView):
