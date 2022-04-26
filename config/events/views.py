@@ -4,12 +4,17 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
-from .forms import EventForm, ImageForm
+from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event
 import uuid
 
 
 # Create your views here.
+class RegisterView(generic.FormView):
+    template_name = 'events/register.html'
+    form_class = NewUserForm
+
+
 class NewEventView(generic.FormView):
     template_name = 'events/new-event.html'
     form_class = EventForm

@@ -6,6 +6,7 @@ app_name = 'events'
 urlpatterns = [
     path('new-event/', views.NewEventView.as_view(), name='new-event'),
     path('create/', views.create_event, name='create'),
+    path('register/', views.RegisterView.as_view(), name='register'),
     path('<int:pk>/qrcode/', views.QRCodeView.as_view(), name='qrcode'),
     path('<slug:slug>/attend', views.AttendView.as_view(), name='attend'),
     path('<slug:slug>/upload-attendance-photo', views.upload_attendance_photo, name='upload-attendance-photo')

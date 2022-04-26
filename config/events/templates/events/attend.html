@@ -2,11 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ event.name }}</title>
 </head>
 <body>
 
-<h1>{{ event.slug }}</h1>
+<h1>{{ event.name }}</h1>
 
 <form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
