@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import login
 
 from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event
@@ -13,6 +14,21 @@ import uuid
 class RegisterView(generic.FormView):
     template_name = 'events/register.html'
     form_class = NewUserForm
+
+
+def create_user(request):
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            #messages.success(request, "Registration successful.")
+            return HttpResponseRedirect(reverse('events:new-event'))
+            #return redirect("main:homepage")
+        #messages.error(request, "Unsuccessful registration. Invalid information.")
+    # form = NewUserForm()
+    #return render(request=request, template_name="events/register.html", context={"register_form": form})
+    return HttpResponseRedirect(reverse('events:register'))
 
 
 class NewEventView(generic.FormView):
@@ -69,9 +85,8 @@ def upload_attendance_photo(request, slug):
             image_datetime = image_instance.get_image_datetime()
             print(image_datetime)
             image_instance.delete()
-            #return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
+            # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(19,)))
-
 
 # def test(request, slug):
 #     if request.method == 'POST':
