@@ -10,6 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event, Attendee, Biometrics
 import uuid
+#from data_converter import convert_encoding_to_binary
 
 
 # Create your views here.
@@ -108,8 +109,13 @@ def upload_face_data_photo(request, pk):
             image_instance = form.instance
             face_encoding = image_instance.get_face_encoding()
             print(face_encoding)
-            #biometrics = Biometrics(owner=user, face_encoding=face_encoding)
-            #biometrics.save()
+            if face_encoding is not None:
+                biometrics = Biometrics(
+                    owner=user,
+                    face_encoding=Biometrics.convert_encoding_to_binary(face_encoding)
+                )
+                biometrics.save()
+                #print(Biometrics.convert_binary_to_encoding(biometrics.face_encoding))
             image_instance.delete()
     return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
 

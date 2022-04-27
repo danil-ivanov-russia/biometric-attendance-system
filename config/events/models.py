@@ -1,4 +1,6 @@
 import datetime
+import io
+
 import face_recognition
 import numpy as np
 
@@ -24,6 +26,20 @@ class Attendee(AbstractUser):
 class Biometrics(models.Model):
     owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)
     face_encoding = models.BinaryField()
+
+    @staticmethod
+    def convert_encoding_to_binary(encoding):
+        out = io.BytesIO()
+        np.save(out, encoding)
+        out.seek(0)
+        return out.read()
+
+    @staticmethod
+    def convert_binary_to_encoding(binary):
+        out = io.BytesIO(binary)
+        out.seek(0)
+        return np.load(out)
+
 
 
 class Event(models.Model):
