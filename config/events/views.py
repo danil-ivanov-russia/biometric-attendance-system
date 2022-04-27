@@ -8,11 +8,15 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
 from .forms import EventForm, ImageForm, NewUserForm
-from .models import Event
+from .models import Event, Attendee, Biometrics
 import uuid
 
 
 # Create your views here.
+class IndexView(generic.TemplateView):
+    template_name = 'events/index.html'
+
+
 class RegisterView(generic.FormView):
     template_name = 'events/register.html'
     form_class = NewUserForm
@@ -48,7 +52,7 @@ def authenticate_user(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return HttpResponseRedirect(reverse('events:new-event'))
+                return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -83,6 +87,31 @@ class QRCodeView(generic.DetailView):
 #     model = Event
 #     form_class = ImageForm
 #     template_name = 'events/attend.html'
+class ProfileView(generic.edit.FormMixin, generic.DetailView):
+    model = Attendee
+    form_class = ImageForm
+    initial = {'image': ''}
+    template_name = 'events/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(generic.DetailView, self).get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
+
+
+def upload_face_data_photo(request, pk):
+    user = get_object_or_404(Attendee, pk=pk)
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            image_instance = form.instance
+            face_encoding = image_instance.get_face_encoding()
+            print(face_encoding)
+            #biometrics = Biometrics(owner=user, face_encoding=face_encoding)
+            #biometrics.save()
+            image_instance.delete()
+    return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
 
 
 class AttendView(generic.edit.FormMixin, generic.DetailView):
@@ -115,7 +144,7 @@ def upload_attendance_photo(request, slug):
             print(image_datetime)
             image_instance.delete()
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
-    return HttpResponseRedirect(reverse('events:qrcode', args=(19,)))
+    return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
 
 # def test(request, slug):
 #     if request.method == 'POST':

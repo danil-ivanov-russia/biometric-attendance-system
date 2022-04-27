@@ -1,5 +1,6 @@
 import datetime
-import uuid
+import face_recognition
+import numpy as np
 
 from django.conf import settings
 from django.db import models
@@ -21,8 +22,8 @@ class Attendee(AbstractUser):
 
 
 class Biometrics(models.Model):
-    # owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)
-    facial_data = models.BinaryField()
+    owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)
+    face_encoding = models.BinaryField()
 
 
 class Event(models.Model):
@@ -58,4 +59,19 @@ class FaceImage(models.Model):
                 datetime_object = datetime.datetime.strptime(data, '%Y:%m:%d %H:%M:%S')
                 break
         return datetime_object
+
+    def get_face_encoding(self):
+        raw_image = Image.open(self.image.path)
+        face_encoding = None
+        for i in range(-1, 2):
+            rotated_image = raw_image.rotate(90 * i, expand=True)
+            #rotated_image.save(self.image.path)
+            current_image = np.array(rotated_image)
+            #face_recognition.load_image_file(self.image.path)
+            face_encodings = face_recognition.face_encodings(current_image)
+            if face_encodings:
+                print(i)
+                face_encoding = face_encodings[0]
+                break
+        return face_encoding
 
