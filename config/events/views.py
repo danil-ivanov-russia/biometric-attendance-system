@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -9,8 +12,6 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event, Attendee, Biometrics
-import uuid
-#from data_converter import convert_encoding_to_binary
 
 
 # Create your views here.
@@ -73,6 +74,7 @@ class NewEventView(generic.FormView):
 def create_event(request):
     if request.method == 'POST':
         event = Event(slug=str(uuid.uuid4()), datetime=timezone.now())
+        print(event.datetime)
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
@@ -147,17 +149,16 @@ def upload_attendance_photo(request, slug):
             form.save()
             image_instance = form.instance
             image_datetime = image_instance.get_image_datetime()
+            print(event.datetime - datetime.timedelta(minutes=1))
             print(image_datetime)
+            print(event.datetime + datetime.timedelta(minutes=10))
+            face_encoding = image_instance.get_face_encoding()
+            #print(face_encoding)
+            if face_encoding is not None \
+                    and (event.datetime - datetime.timedelta(minutes=1) <= image_datetime <= event.datetime + datetime.timedelta(minutes=10)):
+                detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
+                if detected_person is not None:
+                    print(detected_person.get_full_name())
             image_instance.delete()
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
-
-# def test(request, slug):
-#     if request.method == 'POST':
-#         print(slug)
-#     return HttpResponseRedirect(reverse('events:qrcode', args=(1,)))
-#         # form = ImageForm(request.POST, request.FILES)
-#         # if form.is_valid():
-#         #     print(form)
-#         #     #return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
-#         #     return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))

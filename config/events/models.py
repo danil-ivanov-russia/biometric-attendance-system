@@ -40,12 +40,27 @@ class Biometrics(models.Model):
         out.seek(0)
         return np.load(out)
 
+    @staticmethod
+    def find_biometrics_by_encoding(encoding):
+        all_biometrics = Biometrics.objects.all()
+        all_encodings = []
+        for biometrics in all_biometrics:
+            current_encoding = Biometrics.convert_binary_to_encoding(biometrics.face_encoding)
+            all_encodings.append(current_encoding)
+        matches = face_recognition.compare_faces(all_encodings, encoding)
+        face_distances = face_recognition.face_distance(all_encodings, encoding)
+        best_match_index = np.argmin(face_distances)
+        if matches[best_match_index]:
+            return all_biometrics[int(best_match_index)].owner
+        else:
+            return None
 
 
 class Event(models.Model):
     name = models.CharField(max_length=200, blank=True)
     slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
+
     # attendees = models.ManyToManyField(Attendee)
 
     def __str__(self):
@@ -81,13 +96,11 @@ class FaceImage(models.Model):
         face_encoding = None
         for i in range(-1, 2):
             rotated_image = raw_image.rotate(90 * i, expand=True)
-            #rotated_image.save(self.image.path)
+            # rotated_image.save(self.image.path)
             current_image = np.array(rotated_image)
-            #face_recognition.load_image_file(self.image.path)
+            # face_recognition.load_image_file(self.image.path)
             face_encodings = face_recognition.face_encodings(current_image)
             if face_encodings:
-                print(i)
                 face_encoding = face_encodings[0]
                 break
         return face_encoding
-
