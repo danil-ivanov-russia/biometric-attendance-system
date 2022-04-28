@@ -19,7 +19,7 @@ class Attendee(AbstractUser):
     patronymic = models.CharField(max_length=150, blank=True, verbose_name="Отчество")
 
     def get_full_name(self):
-        full_name = "%s %s %s" % (self.first_name, self.last_name, self.patronymic)
+        full_name = "%s %s %s" % (self.last_name, self.first_name, self.patronymic)
         return full_name.strip()
 
 
@@ -60,8 +60,7 @@ class Event(models.Model):
     name = models.CharField(max_length=200, blank=True)
     slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
-
-    # attendees = models.ManyToManyField(Attendee)
+    attendees = models.ManyToManyField(Attendee)
 
     def __str__(self):
         return self.name

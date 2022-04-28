@@ -8,5 +8,12 @@
 <h1>{{ event.name }}</h1>
 {% load qr_code %}
 {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}
+
+<ul>
+{% for attendee in event.attendees.all %}
+    <li>{{ attendee.get_full_name }}</a></li>
+{% endfor %}
+</ul>
+
 </body>
 </html>

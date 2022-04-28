@@ -117,7 +117,7 @@ def upload_face_data_photo(request, pk):
                     face_encoding=Biometrics.convert_encoding_to_binary(face_encoding)
                 )
                 biometrics.save()
-                #print(Biometrics.convert_binary_to_encoding(biometrics.face_encoding))
+                # print(Biometrics.convert_binary_to_encoding(biometrics.face_encoding))
             image_instance.delete()
     return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
 
@@ -153,12 +153,17 @@ def upload_attendance_photo(request, slug):
             print(image_datetime)
             print(event.datetime + datetime.timedelta(minutes=10))
             face_encoding = image_instance.get_face_encoding()
-            #print(face_encoding)
-            if face_encoding is not None \
-                    and (event.datetime - datetime.timedelta(minutes=1) <= image_datetime <= event.datetime + datetime.timedelta(minutes=10)):
+            print(face_encoding)
+            if face_encoding is not None and \
+                    (event.datetime - datetime.timedelta(minutes=1)
+                     <= image_datetime
+                     <= event.datetime + datetime.timedelta(minutes=10)):
                 detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
+                print(detected_person)
                 if detected_person is not None:
                     print(detected_person.get_full_name())
+                    event.attendees.add(detected_person)
+                    event.save()
             image_instance.delete()
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
