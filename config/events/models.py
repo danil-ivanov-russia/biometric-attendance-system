@@ -57,7 +57,7 @@ class Biometrics(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=200, blank=True)
+    name = models.CharField(max_length=200, blank=True, verbose_name="Название")
     slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
     attendees = models.ManyToManyField(Attendee)
@@ -70,7 +70,7 @@ class Event(models.Model):
 
 
 class FaceImage(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(verbose_name="Фотография")
 
     def delete(self, using=None, keep_parents=False):
         self.image.delete(save=False)

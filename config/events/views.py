@@ -31,7 +31,7 @@ def create_user(request):
             user = form.save()
             login(request, user)
             # messages.success(request, "Registration successful.")
-            return HttpResponseRedirect(reverse('events:new-event'))
+            return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
             # return redirect("main:homepage")
         # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()

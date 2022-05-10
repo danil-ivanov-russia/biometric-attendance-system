@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -9,11 +10,13 @@
 {% load qr_code %}
 {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}
 
-<ul>
+<ul id="attendees">
 {% for attendee in event.attendees.all %}
-    <li>{{ attendee.get_full_name }}</a></li>
+    <li>{{ attendee.get_full_name }}</li>
 {% endfor %}
 </ul>
 
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'js/refresh.js' %}"></script>
 </html>
