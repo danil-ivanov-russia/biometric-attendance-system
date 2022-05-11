@@ -1,0 +1,5 @@
+<ul>
+{% for attendee in event.attendees.all %}
+    <li>{{ attendee.get_full_name }}</li>
+{% endfor %}
+</ul>

@@ -167,3 +167,8 @@ def upload_attendance_photo(request, slug):
             image_instance.delete()
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
     return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
+
+
+def attendees_list(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    return render(request, 'events/attendees.html', {"event": event})

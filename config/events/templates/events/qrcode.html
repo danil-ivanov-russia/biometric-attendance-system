@@ -10,13 +10,19 @@
 {% load qr_code %}
 {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}
 
-<ul id="attendees">
-{% for attendee in event.attendees.all %}
-    <li>{{ attendee.get_full_name }}</li>
-{% endfor %}
-</ul>
+<div id="attendees" >
+    {% include "events/attendees.html" %}
+</div>
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="{% static 'js/refresh.js' %}"></script>
+<!--<script src="{% static 'js/refresh.js' %}"></script>-->
+<script>
+function autorefresh() {
+        setInterval(function(){
+            $("#attendees").load('{% url 'events:attendees' event.slug %}')
+    }, 2000);
+}
+</script>
+<script>autorefresh()</script>
 </html>
