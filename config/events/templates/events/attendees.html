@@ -1,3 +1,4 @@
+Кол-во: {{ event.attendees.all.count }}
 <ul>
 {% for attendee in event.attendees.all %}
     <li>{{ attendee.get_full_name }}</li>

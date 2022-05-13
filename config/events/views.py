@@ -99,6 +99,8 @@ def create_event(request):
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
+            form.instance.attendees.add(request.user)
+            form.instance.save()
             return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
 
 

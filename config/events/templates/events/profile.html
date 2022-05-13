@@ -14,5 +14,12 @@
     <input type="submit" value="Загрузить фото">
 </form>
 
+<h2>Посещённые мероприятия</h2>
+<ul>
+{% for event in user.get_attended_events %}
+    <li><a href="{% url 'events:qrcode' event.pk %}">{{ event.name }}</a> {{ event.datetime }}</li>
+{% endfor %}
+</ul>
+
 </body>
 </html>

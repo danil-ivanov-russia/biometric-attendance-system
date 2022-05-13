@@ -22,6 +22,10 @@ class Attendee(AbstractUser):
         full_name = "%s %s %s" % (self.last_name, self.first_name, self.patronymic)
         return full_name.strip()
 
+    def get_attended_events(self):
+        events_list = Event.objects.filter(attendees=self)
+        return reversed(events_list)
+
 
 class Biometrics(models.Model):
     owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)

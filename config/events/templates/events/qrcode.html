@@ -9,7 +9,7 @@
 <h1>{{ event.name }}</h1>
 {% load qr_code %}
 {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}
-
+<h2>Участники</h2>
 <div id="attendees" >
     {% include "events/attendees.html" %}
 </div>
