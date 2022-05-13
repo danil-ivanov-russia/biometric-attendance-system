@@ -7,7 +7,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic, View
 from django.utils import timezone
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -67,6 +67,12 @@ def authenticate_user(request):
     # form = NewUserForm()
     # return render(request=request, template_name="events/register.html", context={"register_form": form})
     return HttpResponseRedirect(reverse('events:login'))
+
+
+@login_required
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('events:index'))
 
 
 class NewEventView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):

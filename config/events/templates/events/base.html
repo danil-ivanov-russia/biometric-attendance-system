@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% block nav %}
+    <ul id="nav">
+        {% if user.is_authenticated %}
+        <li>
+            {% block nav-profile %}
+            <a href="{% url 'events:profile' %}">Профиль</a>
+            {% endblock %}
+        </li>
+        <li>
+            {% block nav-logout %}
+            <a href="{% url 'events:logout' %}">Выйти</a>
+            {% endblock %}
+        </li>
+        {% else %}
+        <li>
+            {% block nav-register %}
+            <a href="{% url 'events:register' %}">Зарегистрироваться</a>
+            {% endblock %}
+        </li>
+        <li>
+            {% block nav-login %}
+            <a href="{% url 'events:login' %}">Войти</a>
+            {% endblock %}
+        </li>
+        {% endif %}
+    </ul>
+    {% endblock %}
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

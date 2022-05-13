@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Система</title>
-</head>
-<body>
+{% extends "events/base.html" %}
+
+{% block title %}Система{% endblock %}
+
+{% block content %}
     <ul>
         <li><a href="{% url 'events:login' %}">Логин</a></li>
         <li><a href="{% url 'events:register' %}">Регистрация</a></li>
         <li><a href="{% url 'events:new-event' %}">Создать мероприятие</a></li>
     </ul>
-</body>
-</html>
+{% endblock %}
