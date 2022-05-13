@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 
 from . import views
 
@@ -11,7 +12,7 @@ urlpatterns = [
     path('create-user/', views.create_user, name='create-user'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('authenticate/', views.authenticate_user, name='authenticate'),
-    path('<int:pk>/profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile/', views.ProfileView.as_view(), name='profile'),
     path('<int:pk>/upload-face-data-photo', views.upload_face_data_photo, name='upload-face-data-photo'),
     path('<int:pk>/qrcode/', views.QRCodeView.as_view(), name='qrcode'),
     path('<slug:slug>/attend', views.AttendView.as_view(), name='attend'),

@@ -5,10 +5,13 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
-from django.views import generic
+from django.views import generic, View
 from django.utils import timezone
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .forms import EventForm, ImageForm, NewUserForm
 from .models import Event, Attendee, Biometrics
@@ -31,7 +34,7 @@ def create_user(request):
             user = form.save()
             login(request, user)
             # messages.success(request, "Registration successful.")
-            return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
+            return HttpResponseRedirect(reverse('events:profile'))
             # return redirect("main:homepage")
         # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()
@@ -54,7 +57,7 @@ def authenticate_user(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
+                return HttpResponseRedirect(reverse('events:profile'))
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -66,9 +69,21 @@ def authenticate_user(request):
     return HttpResponseRedirect(reverse('events:login'))
 
 
-class NewEventView(generic.FormView):
+class NewEventView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):
+    login_url = 'events:login'
+    redirect_field_name = 'redirect_to'
     template_name = 'events/new-event.html'
     form_class = EventForm
+
+    # def get_context_data(self, **kwargs):
+    #     context = self.get_context_data()
+    #     context['form'] = self.get_form()
+    #     return context
+
+
+# class NewEventView(generic.FormView):
+#     template_name = 'events/new-event.html'
+#     form_class = EventForm
 
 
 def create_event(request):
@@ -90,16 +105,16 @@ class QRCodeView(generic.DetailView):
 #     model = Event
 #     form_class = ImageForm
 #     template_name = 'events/attend.html'
-class ProfileView(generic.edit.FormMixin, generic.DetailView):
-    model = Attendee
+class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):
+    #model = Attendee
     form_class = ImageForm
     initial = {'image': ''}
     template_name = 'events/profile.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(generic.DetailView, self).get_context_data(**kwargs)
-        context['form'] = self.get_form()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(generic.DetailView, self).get_context_data(**kwargs)
+    #     context['form'] = self.get_form()
+    #     return context
 
 
 def upload_face_data_photo(request, pk):
