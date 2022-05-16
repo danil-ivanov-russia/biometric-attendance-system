@@ -1,16 +1,36 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Создание мероприятия</title>
-</head>
-<body>
+{% extends "events/base.html" %}
+{% load materializecss %}
+
+{% block title %}Создание мероприятия{% endblock %}
+
+{% block content %}
+
+{% include "events/navbar.html" %}
 
 <form action="{% url 'events:create' %}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Создать мероприятие">
+    {{ form|materializecss }}
+    <input class="waves-effect waves-light btn" type="submit" value="Создать мероприятие">
 </form>
 
-</body>
-</html>
+{% endblock %}
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Создание мероприятия</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<form action="{% url 'events:create' %}" method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <input type="submit" value="Создать мероприятие">-->
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->

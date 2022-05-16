@@ -1,17 +1,53 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Регистрация</title>
-</head>
-<body>
-<h1>Регистрация</h1>
+{% extends "events/base.html" %}
+{% load materializecss %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+{% include "events/navbar.html" %}
+
+<h3 class="center">Регистрация</h3>
 
 <form action="{% url 'events:create-user' %}" method="POST">
 	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Зарегистрироваться">
+<!--	 form|materializecss -->
+	<div class="row">
+	{{ form.username|materializecss:'col s12' }}
+	</div>
+	<div class="row">
+	{{ form.email|materializecss:'col s12' }}
+	</div>
+	<div class="row">
+	{{ form.password1|materializecss:'col s6' }}
+	{{ form.password2|materializecss:'col s6' }}
+	</div>
+	<div class="row">
+	{{ form.last_name|materializecss:'col s12 m6 l3' }}
+	{{ form.first_name|materializecss:'col s12 m6 l3' }}
+	{{ form.patronymic|materializecss:'col s12 m12 l6' }}
+	</div>
+	<div class="row">
+	</div>
+	<input class="waves-effect waves-light btn" type="submit" value="Зарегистрироваться">
 </form>
-	{# <!-- <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p> --> #}
-</body>
-</html>
+
+{% endblock %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Регистрация</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Регистрация</h1>-->
+
+<!--<form action="{% url 'events:create-user' %}" method="POST">-->
+<!--	{% csrf_token %}-->
+<!--	{{ form.as_p }}-->
+<!--	<input type="submit" value="Зарегистрироваться">-->
+<!--</form>-->
+<!--	{# &lt;!&ndash; <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p> &ndash;&gt; #}-->
+<!--</body>-->
+<!--</html>-->

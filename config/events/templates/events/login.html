@@ -1,17 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход</title>
-</head>
-<body>
-<h1>Вход</h1>
+{% extends "events/base.html" %}
+{% load materializecss %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+
+{% include "events/navbar.html" %}
+
+<h3 class="center">Авторизация</h3>
 
 <form action="{% url 'events:authenticate' %}"  method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Войти">
+    {{ form|materializecss }}
+    <input class="waves-effect waves-light btn" type="submit" value="Войти">
 </form>
 
-</body>
-</html>
+{% endblock %}
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Вход</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Вход</h1>-->
+
+<!--<form action="{% url 'events:authenticate' %}"  method="POST">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <input type="submit" value="Войти">-->
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->

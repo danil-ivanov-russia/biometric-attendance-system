@@ -39,6 +39,7 @@ AUTH_USER_MODEL = 'events.Attendee'
 # Application definition
 
 INSTALLED_APPS = [
+    'materializecssform',
     'qr_code',
     'events.apps.EventsConfig',
     'django.contrib.admin',

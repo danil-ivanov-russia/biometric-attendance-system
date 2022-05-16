@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ user.get_full_name }}</title>
-</head>
-<body>
+{% extends "events/base.html" %}
+{% load materializecss %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+
+{% include "events/navbar.html" %}
 
 <h1>{{ user.get_full_name }}</h1>
 
 <form action="{% url 'events:upload-face-data-photo' user.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Загрузить фото">
+    {{ form|materializecss }}
+    <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
 </form>
 
 <h2>Посещённые мероприятия</h2>
@@ -21,5 +22,31 @@
 {% endfor %}
 </ul>
 
-</body>
-</html>
+{% endblock %}
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>{{ user.get_full_name }}</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>{{ user.get_full_name }}</h1>-->
+
+<!--<form action="{% url 'events:upload-face-data-photo' user.id %}" method="post" enctype="multipart/form-data">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <input type="submit" value="Загрузить фото">-->
+<!--</form>-->
+
+<!--<h2>Посещённые мероприятия</h2>-->
+<!--<ul>-->
+<!--{% for event in user.get_attended_events %}-->
+<!--    <li><a href="{% url 'events:qrcode' event.pk %}">{{ event.name }}</a> {{ event.datetime }}</li>-->
+<!--{% endfor %}-->
+<!--</ul>-->
+
+<!--</body>-->
+<!--</html>-->

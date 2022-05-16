@@ -142,7 +142,7 @@ def upload_face_data_photo(request, pk):
                 biometrics.save()
                 # print(Biometrics.convert_binary_to_encoding(biometrics.face_encoding))
             image_instance.delete()
-    return HttpResponseRedirect(reverse('events:profile', args=(user.pk,)))
+    return HttpResponseRedirect(reverse('events:profile'))
 
 
 class AttendView(generic.edit.FormMixin, generic.DetailView):

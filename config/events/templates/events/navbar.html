@@ -1,0 +1,34 @@
+{% block nav %}
+<nav>
+    <div class="nav-wrapper">
+        <a href="{% url 'events:index' %}" class="brand-logo">
+            LOGO
+        </a>
+        <ul id="nav-mobile" class="right">
+            {% if user.is_authenticated %}
+            <li>
+                {% block nav-profile %}
+                <a href="{% url 'events:profile' %}">{{ user.username }}</a>
+                {% endblock %}
+            </li>
+            <li>
+                {% block nav-logout %}
+                <a href="{% url 'events:logout' %}">Выйти</a>
+                {% endblock %}
+            </li>
+            {% else %}
+            <li>
+                {% block nav-register %}
+                <a href="{% url 'events:register' %}">Зарегистрироваться</a>
+                {% endblock %}
+            </li>
+            <li>
+                {% block nav-login %}
+                <a href="{% url 'events:login' %}">Войти</a>
+                {% endblock %}
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+{% endblock %}

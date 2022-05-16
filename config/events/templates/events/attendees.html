@@ -1,6 +1,34 @@
-Кол-во: {{ event.attendees.all.count }}
-<ul>
-{% for attendee in event.attendees.all %}
-    <li>{{ attendee.get_full_name }}</li>
-{% endfor %}
-</ul>
+<div class="card-panel red lighten-2" style="padding: 2px">
+    <div class="row" style="margin-bottom: 14px">
+        <div class="col s10">
+            <h4 class="white-text" >Участники</h4>
+        </div>
+        <div class="col s2">
+            <h4 class="right-align white-text" style="margin-right: 10px"><i class="material-icons" style="font-size: 30px">people</i> {{ event.attendees.all.count }}</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    {% for attendee in event.attendees.all %}
+    <div class="col s6 m4 l3">
+        <div class="card-panel teal">
+            <span class="white-text">
+                {{ attendee.get_full_name }}
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+<!--<ul class="collection">-->
+<!--{% for attendee in event.attendees.all %}-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--    <li class="collection-item">{{ attendee.get_full_name }}</li>-->
+<!--{% endfor %}-->
+<!--</ul>-->
+</div>

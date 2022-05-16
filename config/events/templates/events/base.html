@@ -1,39 +1,20 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% block nav %}
-    <ul id="nav">
-        {% if user.is_authenticated %}
-        <li>
-            {% block nav-profile %}
-            <a href="{% url 'events:profile' %}">Профиль</a>
-            {% endblock %}
-        </li>
-        <li>
-            {% block nav-logout %}
-            <a href="{% url 'events:logout' %}">Выйти</a>
-            {% endblock %}
-        </li>
-        {% else %}
-        <li>
-            {% block nav-register %}
-            <a href="{% url 'events:register' %}">Зарегистрироваться</a>
-            {% endblock %}
-        </li>
-        <li>
-            {% block nav-login %}
-            <a href="{% url 'events:login' %}">Войти</a>
-            {% endblock %}
-        </li>
-        {% endif %}
-    </ul>
-    {% endblock %}
+<div class="container">
 
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
+</div>
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
 </html>

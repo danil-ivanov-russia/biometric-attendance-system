@@ -3,9 +3,13 @@
 {% block title %}Система{% endblock %}
 
 {% block content %}
+
+{% include "events/navbar.html" %}
+
     <ul>
         <li><a href="{% url 'events:login' %}">Логин</a></li>
         <li><a href="{% url 'events:register' %}">Регистрация</a></li>
         <li><a href="{% url 'events:new-event' %}">Создать мероприятие</a></li>
     </ul>
+
 {% endblock %}

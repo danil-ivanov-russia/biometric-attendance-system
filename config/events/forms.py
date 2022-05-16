@@ -19,7 +19,8 @@ class NewUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['last_name'].required = True
+        self.fields['first_name'].required = True
 
     class Meta:
         model = Attendee
-        fields = ("username", "last_name", "first_name", "patronymic", "email", "password1", "password2")
+        fields = ("username",  "email", "password1", "password2", "last_name", "first_name", "patronymic", )
