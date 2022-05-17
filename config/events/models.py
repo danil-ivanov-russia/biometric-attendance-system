@@ -26,6 +26,10 @@ class Attendee(AbstractUser):
         events_list = Event.objects.filter(attendees=self)
         return reversed(events_list)
 
+    def get_biometrics(self):
+        biometrics_list = Biometrics.objects.filter(owner=self)
+        return reversed(biometrics_list)
+
 
 class Biometrics(models.Model):
     owner = models.ForeignKey(Attendee, on_delete=models.CASCADE)

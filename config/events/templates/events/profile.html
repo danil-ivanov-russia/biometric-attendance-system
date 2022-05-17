@@ -5,22 +5,66 @@
 
 {% block content %}
 
-{% include "events/navbar.html" %}
+<div class="card-panel">
 
-<h1>{{ user.get_full_name }}</h1>
+    <h4 class="center">{{ user.get_full_name }}</h4>
 
-<form action="{% url 'events:upload-face-data-photo' user.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form|materializecss }}
-    <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
-</form>
-
-<h2>Посещённые мероприятия</h2>
-<ul>
-{% for event in user.get_attended_events %}
-    <li><a href="{% url 'events:qrcode' event.pk %}">{{ event.name }}</a> {{ event.datetime }}</li>
-{% endfor %}
-</ul>
+    <form action="{% url 'events:upload-face-data-photo' user.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col s12 m12 l5">
+                <div class="card-panel">
+                    <div class="row">
+                        {{ form|materializecss:'col s12' }}
+                    </div>
+                    <div class="center row">
+                        <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
+                    </div>
+                </div>
+                <div class="card-panel">
+                    <div class="row">
+                        <h4 class="center">Данные лица</h4>
+                    </div>
+                    <div class="row">
+                        <ul class="collection">
+                            {% for biometrics in user.get_biometrics %}
+                                <li class="collection-item">
+                                    Снимок {{ biometrics.id }}
+                                    <a class="right material-icons red-text text-darken-2" href="{% url 'events:delete-biometrics' biometrics.id %}">delete</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l7">
+                <div class="card-panel">
+                    <div class="row">
+                        <h4 class="center">Посещённые мероприятия</h4>
+                    </div>
+                        <table>
+                            <thead>
+                              <tr>
+                                  <th>Название</th>
+                                  <th class="right">Дата</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for event in user.get_attended_events %}
+                                <tr>
+<!--                                <li class="collection-item">-->
+                                    <td><a href="{% url 'events:event' event.pk %}">{{ event.name }}</a></td>
+                                    <td class="right">{{ event.datetime|date:"SHORT_DATE_FORMAT" }}</td>
+<!--                                </li>-->
+                                <tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 {% endblock %}
 

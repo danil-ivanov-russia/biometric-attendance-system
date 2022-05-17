@@ -9,6 +9,9 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+{% block navbar %}
+{% include "events/navbar.html" %}
+{% endblock %}
 <div class="container">
 
     {% block content %}{% endblock %}

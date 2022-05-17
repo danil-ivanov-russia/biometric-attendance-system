@@ -5,7 +5,6 @@
 
 {% block content %}
 
-{% include "events/navbar.html" %}
 <div class="card-panel">
 
 	<h3 class="center">Регистрация</h3>
@@ -20,8 +19,8 @@
 		{{ form.email|materializecss:'col s12' }}
 		</div>
 		<div class="row">
-		{{ form.password1|materializecss:'col s6' }}
-		{{ form.password2|materializecss:'col s6' }}
+		{{ form.password1|materializecss:'col s12 m6 l6' }}
+		{{ form.password2|materializecss:'col s12 m6 l6' }}
 		</div>
 		<div class="row">
 		{{ form.last_name|materializecss:'col s12 m6 l3' }}

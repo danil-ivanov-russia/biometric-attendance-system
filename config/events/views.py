@@ -192,6 +192,13 @@ def upload_attendance_photo(request, slug):
     return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
 
 
+def delete_biometrics(request, pk):
+    biometrics = get_object_or_404(Biometrics, pk=pk)
+    if request.user.is_authenticated and request.user == biometrics.owner:
+        biometrics.delete()
+    return HttpResponseRedirect(reverse('events:profile'))
+
+
 def attendees_list(request, slug):
     event = get_object_or_404(Event, slug=slug)
     return render(request, 'events/attendees.html', {"event": event})

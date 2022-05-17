@@ -5,7 +5,6 @@
 
 {% block content %}
 
-{% include "events/navbar.html" %}
 <div class="card-panel">
 
     <h3 class="center">Авторизация</h3>
@@ -13,8 +12,8 @@
     <form action="{% url 'events:authenticate' %}"  method="POST">
         {% csrf_token %}
 		<div class="row">
-		{{ form.username|materializecss:'col s6' }}
-		{{ form.password|materializecss:'col s6' }}
+		{{ form.username|materializecss:'col s12 m6' }}
+		{{ form.password|materializecss:'col s12 m6' }}
         </div>
 
 		<div class="row">
