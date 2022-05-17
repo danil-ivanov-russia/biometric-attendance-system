@@ -4,7 +4,7 @@
   <div class="row" style="margin-bottom: 0px">
     <div class="col s12">
       <div class="center">
-        {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size=26 %}
+        {% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size=26 border=2 %}
       </div>
     </div>
   </div>
