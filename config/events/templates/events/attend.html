@@ -3,15 +3,30 @@
 {% block title %}{{ event.name }}{% endblock %}
 
 {% block content %}
-
-<h1>{{ event.name }}</h1>
-
-<form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
-</form>
-
+<div class="card-panel" style="padding: 2px">
+{% if event.get_timer_remaining %}
+ <div class="row">
+     <div class="col s12">
+        <h4 class="center">{{ event.name }}</h4>
+     </div>
+ </div>
+ <div class="row">
+     <div class="col s12">
+        <form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
+        </form>
+     </div>
+ </div>
+{% else %}
+ <div class="row">
+     <div class="col s12">
+        <h4 class="center">Подтверждение посещаемости недоступно</h4>
+     </div>
+ </div>
+{% endif %}
+</div>
 {% endblock %}
 
 <!--<!DOCTYPE html>-->

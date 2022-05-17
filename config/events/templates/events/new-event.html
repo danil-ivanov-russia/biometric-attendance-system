@@ -6,13 +6,25 @@
 {% block content %}
 
 {% include "events/navbar.html" %}
+<div class="card-panel">
 
-<form action="{% url 'events:create' %}" method="post">
-    {% csrf_token %}
-    {{ form|materializecss }}
-    <input class="waves-effect waves-light btn" type="submit" value="Создать мероприятие">
-</form>
+    <h3 class="center">Создание мероприятия</h3>
 
+    <form action="{% url 'events:create' %}" method="post">
+        {% csrf_token %}
+		<div class="row">
+		{{ form.name|materializecss:'col s8' }}
+		{{ form.timer|materializecss:'col s4' }}
+        </div>
+
+		<div class="row">
+            <div class="col s12">
+                <input class="right waves-effect waves-light btn" type="submit" value="Создать мероприятие">
+            </div>
+        </div>
+    </form>
+
+</div>
 {% endblock %}
 
 

@@ -4,12 +4,21 @@ from .models import Event, FaceImage, Attendee
 
 
 class EventForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].required = True
+        self.fields['timer'].required = True
+
     class Meta:
         model = Event
-        fields = ['name']
+        fields = ('name', 'timer', )
 
 
 class ImageForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].required = True
+
     class Meta:
         model = FaceImage
         fields = ['image']

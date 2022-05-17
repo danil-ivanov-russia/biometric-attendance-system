@@ -101,12 +101,12 @@ def create_event(request):
             form.save()
             form.instance.attendees.add(request.user)
             form.instance.save()
-            return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
+            return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
 
 
-class QRCodeView(generic.DetailView):
+class EventView(generic.DetailView):
     model = Event
-    template_name = 'events/qrcode.html'
+    template_name = 'events/event.html'
 
 
 # class AttendView(generic.DetailView):
@@ -180,7 +180,7 @@ def upload_attendance_photo(request, slug):
             if face_encoding is not None and \
                     (event.datetime - datetime.timedelta(minutes=1)
                      <= image_datetime
-                     <= event.datetime + datetime.timedelta(minutes=10)):
+                     <= event.datetime + event.get_timer_interval()):
                 detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
                 print(detected_person)
                 if detected_person is not None:
@@ -189,9 +189,14 @@ def upload_attendance_photo(request, slug):
                     event.save()
             image_instance.delete()
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
-    return HttpResponseRedirect(reverse('events:qrcode', args=(event.pk,)))
+    return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
 
 
 def attendees_list(request, slug):
     event = get_object_or_404(Event, slug=slug)
     return render(request, 'events/attendees.html', {"event": event})
+
+
+def qrcode(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    return render(request, 'events/qrcode.html', {"event": event})

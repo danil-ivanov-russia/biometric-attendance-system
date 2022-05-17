@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 import io
 
 import face_recognition
@@ -64,6 +64,7 @@ class Event(models.Model):
     name = models.CharField(max_length=200, blank=True, verbose_name="Название")
     slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
+    timer = models.TimeField(default=dt.time(0, 5, 0), verbose_name="Таймер")
     attendees = models.ManyToManyField(Attendee)
 
     def __str__(self):
@@ -71,6 +72,17 @@ class Event(models.Model):
 
     def get_attendance_url(self):
         return reverse('events:attend', kwargs={"slug": self.slug})
+
+    def get_timer_interval(self):
+        return dt.timedelta(hours=self.timer.hour, minutes=self.timer.minute, seconds=self.timer.second)
+
+    def get_timer_remaining(self):
+        remaining_time = self.get_timer_interval() - (timezone.now() - self.datetime)
+        result = str(remaining_time).split('.')[0]
+        if remaining_time < dt.timedelta(hours=0, minutes=0, seconds=0):
+            #remaining_time = dt.timedelta(hours=0, minutes=0, seconds=0)
+            result = False
+        return result
 
 
 class FaceImage(models.Model):
@@ -90,7 +102,7 @@ class FaceImage(models.Model):
                 data = exif_data.get(tag_id)
                 if isinstance(data, bytes):
                     data = data.decode()
-                datetime_object = datetime.datetime.strptime(data, '%Y:%m:%d %H:%M:%S')
+                datetime_object = dt.datetime.strptime(data, '%Y:%m:%d %H:%M:%S')
                 break
         return datetime_object
 
