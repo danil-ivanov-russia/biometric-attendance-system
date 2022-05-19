@@ -4,10 +4,22 @@
 
 {% block content %}
 
-    <ul>
-        <li><a href="{% url 'events:login' %}">Логин</a></li>
-        <li><a href="{% url 'events:register' %}">Регистрация</a></li>
-        <li><a href="{% url 'events:new-event' %}">Создать мероприятие</a></li>
-    </ul>
+<div class="row">
+    <div class="col s0 m2 l3"></div>
+    <div class="col s12 m8 l6">
+        <div class="center card-panel">
+            <i class="material-icons large">camera</i>
+            <h5>Начните мероприятие</h5>
+            <p class="light center">Нажмите на кнопку ниже, чтобы создать новое мероприятие и начать фиксировать его посещаемость.</p>
+            <a class="center waves-effect waves-light btn" href="{% url 'events:new-event' %}">Создать мероприятие</a>
+        </div>
+    </div>
+    <div class="col s0 m2 l3"></div>
+</div>
+<!--    <ul>-->
+<!--        <li><a href="{% url 'events:login' %}">Логин</a></li>-->
+<!--        <li><a href="{% url 'events:register' %}">Регистрация</a></li>-->
+<!--        <li><a href="{% url 'events:new-event' %}">Создать мероприятие</a></li>-->
+<!--    </ul>-->
 
 {% endblock %}

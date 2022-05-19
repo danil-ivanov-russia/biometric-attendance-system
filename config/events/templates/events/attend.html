@@ -1,4 +1,5 @@
 {% extends "events/base.html" %}
+{% load materializecss %}
 
 {% block title %}{{ event.name }}{% endblock %}
 
@@ -16,8 +17,8 @@
      <div class="col s12">
         <form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
+            {{ form|materializecss }}
+            <button class="center waves-effect waves-light btn" type="submit">Загрузить фото</button>
         </form>
      </div>
  </div>

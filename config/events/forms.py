@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, CheckboxInput
 from django.contrib.auth.forms import UserCreationForm
 from .models import Event, FaceImage, Attendee
 
@@ -25,6 +25,7 @@ class ImageForm(ModelForm):
 
 
 class NewUserForm(UserCreationForm):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['last_name'].required = True
@@ -33,3 +34,8 @@ class NewUserForm(UserCreationForm):
     class Meta:
         model = Attendee
         fields = ("username",  "email", "password1", "password2", "last_name", "first_name", "patronymic", )
+        help_texts = {
+            'last_name': 'Обязательное поле.',
+            'first_name': 'Обязательное поле.',
+            'password1': 'Обязательное поле.',
+        }

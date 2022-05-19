@@ -2,14 +2,14 @@
 <nav>
     <div class="container">
         <div class="nav-wrapper">
-            <a href="{% url 'events:index' %}" class="left brand-logo">
-                LOGO
+            <a href="{% url 'events:index' %}" class="material-icons" style="font-size: 62px">
+                portrait
             </a>
             <ul id="nav-mobile" class="right">
                 {% if user.is_authenticated %}
                 <li>
                     {% block nav-profile %}
-                    <a href="{% url 'events:profile' %}">{{ user.username }}</a>
+                    <a href="{% url 'events:profile' %}">Профиль: {{ user.username }}</a>
                     {% endblock %}
                 </li>
                 <li>

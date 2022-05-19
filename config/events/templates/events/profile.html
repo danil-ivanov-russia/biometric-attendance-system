@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="card-panel">
+<div class="card-panel" style="padding: 2px">
 
     <h4 class="center">{{ user.get_full_name }}</h4>
 
@@ -18,7 +18,7 @@
                         {{ form|materializecss:'col s12' }}
                     </div>
                     <div class="center row">
-                        <input class="waves-effect waves-light btn" type="submit" value="Загрузить фото">
+                        <button class="center waves-effect waves-light btn" type="submit">Загрузить фото</button>
                     </div>
                 </div>
                 <div class="card-panel">
@@ -32,6 +32,10 @@
                                     Снимок {{ biometrics.id }}
                                     <a class="right material-icons red-text text-darken-2" href="{% url 'events:delete-biometrics' biometrics.id %}">delete</a>
                                 </li>
+                            {% empty %}
+                                <div class="card-panel transparent" style="margin: 10px">
+                                    <p class="center red-text text-darken-1">Внимание! Для корректного распознавания лица требуется загрузить хотя бы одну фотографию в систему.</p>
+                                </div>
                             {% endfor %}
                         </ul>
                     </div>
@@ -52,13 +56,15 @@
                             <tbody>
                             {% for event in user.get_attended_events %}
                                 <tr>
-<!--                                <li class="collection-item">-->
                                     <td><a href="{% url 'events:event' event.pk %}">{{ event.name }}</a></td>
                                     <td class="right">{{ event.datetime|date:"SHORT_DATE_FORMAT" }}</td>
-<!--                                </li>-->
                                 <tr>
-                            </tbody>
+                            {% empty %}
+                                <div class="card-panel transparent" style="margin: 10px">
+                                    <p class="center">Мероприятий нет.</p>
+                                </div>
                             {% endfor %}
+                            </tbody>
                         </table>
                 </div>
             </div>

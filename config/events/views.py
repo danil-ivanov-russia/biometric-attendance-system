@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic, View
@@ -57,16 +57,21 @@ def authenticate_user(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return HttpResponseRedirect(reverse('events:profile'))
+                return redirect(reverse('events:profile'))
             else:
-                messages.error(request, "Invalid username or password.")
+                messages.error(request, "Неверное имя пользователя или пароль.")
+                # return render('events:login')
+                return redirect(reverse('events:login'))
         else:
-            messages.error(request, "Invalid username or password.")
-            # return redirect("main:homepage")
+            messages.error(request, "Неверное имя пользователя или пароль.")
+            # return render(request, 'events/login.html')
+            # return redirect('events:login')
+            # return redirect(reverse('events:login'))
         # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()
     # return render(request=request, template_name="events/register.html", context={"register_form": form})
-    return HttpResponseRedirect(reverse('events:login'))
+    return redirect(reverse('events:login'))
+    # return redirect('events:login')
 
 
 @login_required

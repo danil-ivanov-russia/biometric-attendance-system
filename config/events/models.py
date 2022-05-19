@@ -68,7 +68,7 @@ class Event(models.Model):
     name = models.CharField(max_length=200, blank=True, verbose_name="Название")
     slug = models.CharField(max_length=36, blank=True)
     datetime = models.DateTimeField()
-    timer = models.TimeField(default=dt.time(0, 5, 0), verbose_name="Таймер")
+    timer = models.TimeField(default=dt.time(0, 5), verbose_name="Таймер")
     attendees = models.ManyToManyField(Attendee)
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Event(models.Model):
 
 
 class FaceImage(models.Model):
-    image = models.ImageField(verbose_name="Фотография")
+    image = models.ImageField(verbose_name="Фото", help_text="Сделайте фотографию своего лица анфас. Лицо должно занимать 80% изображения.")
 
     def delete(self, using=None, keep_parents=False):
         self.image.delete(save=False)
