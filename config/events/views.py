@@ -56,17 +56,11 @@ def authenticate_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.info(request, f"Вы вошли как {username}.")
                 return redirect(reverse('events:profile'))
-            else:
-                messages.error(request, "Неверное имя пользователя или пароль.")
-                # return render('events:login')
-                return redirect(reverse('events:login'))
         else:
             messages.error(request, "Неверное имя пользователя или пароль.")
-            # return render(request, 'events/login.html')
-            # return redirect('events:login')
-            # return redirect(reverse('events:login'))
+            return render(request, 'events/login.html', {"form": form})
         # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()
     # return render(request=request, template_name="events/register.html", context={"register_form": form})
@@ -86,16 +80,6 @@ class NewEventView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateV
     template_name = 'events/new-event.html'
     form_class = EventForm
 
-    # def get_context_data(self, **kwargs):
-    #     context = self.get_context_data()
-    #     context['form'] = self.get_form()
-    #     return context
-
-
-# class NewEventView(generic.FormView):
-#     template_name = 'events/new-event.html'
-#     form_class = EventForm
-
 
 def create_event(request):
     if request.method == 'POST':
@@ -107,6 +91,14 @@ def create_event(request):
             form.instance.attendees.add(request.user)
             form.instance.save()
             return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
+        else:
+            # return redirect(reverse('events:new-event'))
+            messages.error(request, "Неверные параметры мероприятия.")
+            return render(request, 'events/new-event.html', {
+                "form": form,
+                "redirect_field_name": 'redirect_to',
+                "login_url": 'events:login',
+            })
 
 
 class EventView(generic.DetailView):
@@ -119,15 +111,9 @@ class EventView(generic.DetailView):
 #     form_class = ImageForm
 #     template_name = 'events/attend.html'
 class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):
-    #model = Attendee
     form_class = ImageForm
     initial = {'image': ''}
     template_name = 'events/profile.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(generic.DetailView, self).get_context_data(**kwargs)
-    #     context['form'] = self.get_form()
-    #     return context
 
 
 def upload_face_data_photo(request, pk):
@@ -138,15 +124,17 @@ def upload_face_data_photo(request, pk):
             form.save()
             image_instance = form.instance
             face_encoding = image_instance.get_face_encoding()
-            print(face_encoding)
+            image_instance.delete()
             if face_encoding is not None:
                 biometrics = Biometrics(
                     owner=user,
                     face_encoding=Biometrics.convert_encoding_to_binary(face_encoding)
                 )
                 biometrics.save()
-                # print(Biometrics.convert_binary_to_encoding(biometrics.face_encoding))
-            image_instance.delete()
+            else:
+                messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл, попробуйте ещё раз.")
+        else:
+            messages.error(request, "Загружен неподходящий файл.")
     return HttpResponseRedirect(reverse('events:profile'))
 
 
@@ -177,24 +165,31 @@ def upload_attendance_photo(request, slug):
             form.save()
             image_instance = form.instance
             image_datetime = image_instance.get_image_datetime()
-            print(event.datetime - datetime.timedelta(minutes=1))
-            print(image_datetime)
-            print(event.datetime + datetime.timedelta(minutes=10))
+            # print(event.datetime - datetime.timedelta(minutes=1))
+            # print(image_datetime)
+            # print(event.datetime + datetime.timedelta(minutes=10))
             face_encoding = image_instance.get_face_encoding()
-            print(face_encoding)
+            image_instance.delete()
+            # print(face_encoding)
             if face_encoding is not None and \
                     (event.datetime - datetime.timedelta(minutes=1)
                      <= image_datetime
                      <= event.datetime + event.get_timer_interval()):
                 detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
-                print(detected_person)
+                # print(detected_person)
                 if detected_person is not None:
-                    print(detected_person.get_full_name())
+                    # print(detected_person.get_full_name())
                     event.attendees.add(detected_person)
                     event.save()
-            image_instance.delete()
+                    return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
+                else:
+                    messages.error(request, "Не найдено совпадений с известными лицами пользователей.")
+            else:
+                messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл, попробуйте ещё раз.")
+        else:
+            messages.error(request, "Загружен неподходящий файл.")
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))
-    return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
+    return HttpResponseRedirect(reverse('events:attend', args=(event.slug,)))
 
 
 def delete_biometrics(request, pk):

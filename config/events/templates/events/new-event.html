@@ -6,7 +6,30 @@
 {% block content %}
 <div class="card-panel" style="padding: 10px">
 
-    <h3 class="center">Создание мероприятия</h3>
+    <h3 class="row center">Создание мероприятия</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col s12">
+                {% if message.tags == 'error' %}
+                    <div class="center card-panel red lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="center card-panel green lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
     <form action="{% url 'events:create' %}" method="post">
         {% csrf_token %}
 		<div class="row" style="margin-bottom: 0px">

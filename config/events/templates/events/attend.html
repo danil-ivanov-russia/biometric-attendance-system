@@ -7,28 +7,53 @@
 
 {% block content %}
 <div class="card-panel" style="padding: 2px">
-{% if event.get_timer_remaining %}
- <div class="row">
-     <div class="col s12">
-        <h4 class="center">{{ event.name }}</h4>
+    {% if event.get_timer_remaining %}
+     <div class="row" style="margin-bottom: 0px">
+         <div class="col s12">
+            <h4 class="center">{{ event.name }}</h4>
+         </div>
      </div>
- </div>
- <div class="row">
-     <div class="col s12">
-        <form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|materializecss }}
-            <button class="center waves-effect waves-light btn" type="submit">Загрузить фото</button>
-        </form>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col s12">
+                {% if message.tags == 'error' %}
+                    <div class="center card-panel red lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="center card-panel green lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+     <div class="row">
+         <div class="col s12">
+            <form action="{% url 'events:upload-attendance-photo' event.slug %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|materializecss }}
+                <div class="center row" style="margin-bottom: 0px">
+                    <button class="center waves-effect waves-light btn" type="submit">Загрузить фото</button>
+                </div>
+            </form>
+         </div>
      </div>
- </div>
-{% else %}
- <div class="row">
-     <div class="col s12">
-        <h4 class="center">Подтверждение посещаемости недоступно</h4>
+    {% else %}
+     <div class="row">
+         <div class="col s12">
+            <h4 class="center">Подтверждение посещаемости недоступно</h4>
+         </div>
      </div>
- </div>
-{% endif %}
+    {% endif %}
 </div>
 {% endblock %}
 

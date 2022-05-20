@@ -12,9 +12,12 @@ from django.utils import timezone
 from PIL import Image
 from PIL.ExifTags import TAGS
 from django.contrib.auth.models import AbstractUser
+# from .validators import validate_time_string
 
 
 # Create your models here.
+
+
 class Attendee(AbstractUser):
     patronymic = models.CharField(max_length=150, blank=True, verbose_name="Отчество")
 
@@ -57,11 +60,15 @@ class Biometrics(models.Model):
             all_encodings.append(current_encoding)
         matches = face_recognition.compare_faces(all_encodings, encoding)
         face_distances = face_recognition.face_distance(all_encodings, encoding)
-        best_match_index = np.argmin(face_distances)
-        if matches[best_match_index]:
-            return all_biometrics[int(best_match_index)].owner
-        else:
+        print(face_distances)
+        if not face_distances:
             return None
+        else:
+            best_match_index = np.argmin(face_distances)
+            if matches[best_match_index]:
+                return all_biometrics[int(best_match_index)].owner
+            else:
+                return None
 
 
 class Event(models.Model):
@@ -111,15 +118,17 @@ class FaceImage(models.Model):
         return datetime_object
 
     def get_face_encoding(self):
-        raw_image = Image.open(self.image.path)
         face_encoding = None
-        for i in range(-1, 2):
-            rotated_image = raw_image.rotate(90 * i, expand=True)
-            # rotated_image.save(self.image.path)
-            current_image = np.array(rotated_image)
-            # face_recognition.load_image_file(self.image.path)
-            face_encodings = face_recognition.face_encodings(current_image)
-            if face_encodings:
-                face_encoding = face_encodings[0]
-                break
-        return face_encoding
+        try:
+            raw_image = Image.open(self.image.path)
+            for i in range(-1, 2):
+                rotated_image = raw_image.rotate(90 * i, expand=True)
+                # rotated_image.save(self.image.path)
+                current_image = np.array(rotated_image)
+                # face_recognition.load_image_file(self.image.path)
+                face_encodings = face_recognition.face_encodings(current_image)
+                if face_encodings:
+                    face_encoding = face_encodings[0]
+                    break
+        finally:
+            return face_encoding

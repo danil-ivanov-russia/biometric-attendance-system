@@ -7,16 +7,14 @@
 
 <div class="card-panel" style="padding: 10px">
 
-	<h3 class="center">Регистрация</h3>
+	<h3 class="row center">Регистрация</h3>
 
 	<form action="{% url 'events:create-user' %}" method="POST">
 		{% csrf_token %}
 	<!--	 form|materializecss -->
 		<div class="row" style="margin-bottom: 0px">
-			{{ form.username|materializecss:'col s12' }}
-		</div>
-		<div class="row" style="margin-bottom: 0px">
-			{{ form.email|materializecss:'col s12' }}
+			{{ form.username|materializecss:'col s12 m6 l6' }}
+			{{ form.email|materializecss:'col s12 m6 l6' }}
 		</div>
 		<div class="row" style="margin-bottom: 0px">
 			{{ form.password1|materializecss:'col s12 m6 l6' }}
