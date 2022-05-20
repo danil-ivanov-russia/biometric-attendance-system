@@ -117,7 +117,9 @@ class EventDetailView(generic.DetailView):
 
 def provide_json(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    return HttpResponse(event.get_json(), content_type='application/json')
+    response = HttpResponse(event.get_json(), content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename=event_' + str(event.id) + '.json'
+    return response
 
 
 class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):
@@ -142,7 +144,8 @@ def upload_face_data_photo(request, pk):
                 )
                 biometrics.save()
             else:
-                messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл, попробуйте ещё раз.")
+                messages.error(request,
+                               "Лицо на фотографии не обнаружено или был загружен неподходящий файл, попробуйте ещё раз.")
         else:
             messages.error(request, "Загружен неподходящий файл.")
     return HttpResponseRedirect(reverse('events:profile'))
