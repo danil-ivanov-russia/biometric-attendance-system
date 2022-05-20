@@ -1,0 +1,53 @@
+{% extends "events/base.html" %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card-panel">
+    <div class="row" style="margin-bottom: 0px">
+         <div class="col s12">
+            <h4 class="center">Информация о мероприятии</h4>
+         </div>
+     </div>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col s12">
+                {% if message.tags == 'error' %}
+                    <div class="center card-panel red lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="center card-panel green lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+     <div class="row" style="margin-bottom: 0px">
+         <div class="col s12">
+            <h5 class="left">Название: {{ event.name }}</h5>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col s12">
+            <h5 class="left">Дата проведения: {{ event.datetime|date:"SHORT_DATE_FORMAT" }}</h5>
+         </div>
+     </div>
+    <div class="row">
+        <a class="left waves-effect waves-light btn" href="{% url 'events:json' event.pk %}">Детали мероприятия в формате json</a>
+    </div>
+
+    <div id="attendees">
+        {% include "events/attendees.html" %}
+    </div>
+</div>
+{% endblock %}

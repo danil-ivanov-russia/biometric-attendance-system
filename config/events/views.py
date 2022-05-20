@@ -33,9 +33,13 @@ def create_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            # messages.success(request, "Registration successful.")
+            messages.success(request, "Регистрация прошла успешно.")
             return HttpResponseRedirect(reverse('events:profile'))
             # return redirect("main:homepage")
+        else:
+            messages.error(request, "Что-то пошло не так.")
+            return render(request, 'events/register.html', {"form": form})
+            # return HttpResponseRedirect(reverse('events:register'))
         # messages.error(request, "Unsuccessful registration. Invalid information.")
     # form = NewUserForm()
     # return render(request=request, template_name="events/register.html", context={"register_form": form})
@@ -106,10 +110,16 @@ class EventView(generic.DetailView):
     template_name = 'events/event.html'
 
 
-# class AttendView(generic.DetailView):
-#     model = Event
-#     form_class = ImageForm
-#     template_name = 'events/attend.html'
+class EventDetailView(generic.DetailView):
+    model = Event
+    template_name = 'events/event-detail.html'
+
+
+def provide_json(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return HttpResponse(event.get_json(), content_type='application/json')
+
+
 class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.TemplateView):
     form_class = ImageForm
     initial = {'image': ''}
@@ -165,12 +175,8 @@ def upload_attendance_photo(request, slug):
             form.save()
             image_instance = form.instance
             image_datetime = image_instance.get_image_datetime()
-            # print(event.datetime - datetime.timedelta(minutes=1))
-            # print(image_datetime)
-            # print(event.datetime + datetime.timedelta(minutes=10))
             face_encoding = image_instance.get_face_encoding()
             image_instance.delete()
-            # print(face_encoding)
             if face_encoding is not None and \
                     (event.datetime - datetime.timedelta(minutes=1)
                      <= image_datetime
@@ -181,11 +187,12 @@ def upload_attendance_photo(request, slug):
                     # print(detected_person.get_full_name())
                     event.attendees.add(detected_person)
                     event.save()
-                    return HttpResponseRedirect(reverse('events:event', args=(event.pk,)))
+                    messages.success(request, "Вы были распознаны как " + detected_person.get_full_name() + ".")
+                    return HttpResponseRedirect(reverse('events:event-detail', args=(event.pk,)))
                 else:
                     messages.error(request, "Не найдено совпадений с известными лицами пользователей.")
             else:
-                messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл, попробуйте ещё раз.")
+                messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл.")
         else:
             messages.error(request, "Загружен неподходящий файл.")
             # return HttpResponseRedirect(reverse('events:attend', kwargs={"slug": event.slug}))

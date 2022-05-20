@@ -1,11 +1,14 @@
 import datetime as dt
 import io
+import json
 
 import face_recognition
 import numpy as np
 
 from django.conf import settings
+from django.core import serializers
 from django.db import models
+from django.forms import model_to_dict
 from django.http import request
 from django.urls import reverse
 from django.utils import timezone
@@ -27,7 +30,10 @@ class Attendee(AbstractUser):
 
     def get_attended_events(self):
         events_list = Event.objects.filter(attendees=self)
-        return reversed(events_list)
+        if not events_list:
+            return None
+        else:
+            return reversed(events_list)
 
     def get_biometrics(self):
         biometrics_list = Biometrics.objects.filter(owner=self)
@@ -61,7 +67,7 @@ class Biometrics(models.Model):
         matches = face_recognition.compare_faces(all_encodings, encoding)
         face_distances = face_recognition.face_distance(all_encodings, encoding)
         print(face_distances)
-        if not face_distances:
+        if not face_distances.any():
             return None
         else:
             best_match_index = np.argmin(face_distances)
@@ -94,6 +100,14 @@ class Event(models.Model):
             #remaining_time = dt.timedelta(hours=0, minutes=0, seconds=0)
             result = False
         return result
+
+    def get_json(self):
+        temp_dictionary = model_to_dict(self, fields=['id', 'name', 'datetime', 'attendees'])
+        temp_dictionary['attendees'] = list(self.attendees.all().values(
+            'id', 'username', 'first_name', 'patronymic', 'last_name', 'email'
+        ))
+        json_file = json.dumps(temp_dictionary, default=str, ensure_ascii=False)
+        return json_file
 
 
 class FaceImage(models.Model):

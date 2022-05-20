@@ -9,6 +9,28 @@
 
 	<h3 class="row center">Регистрация</h3>
 
+	{% if messages %}
+        {% for message in messages %}
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col s12">
+                {% if message.tags == 'error' %}
+                    <div class="center card-panel red lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="center card-panel green lighten-2">
+                        <span class="white-text">
+                            {{ message }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
 	<form action="{% url 'events:create-user' %}" method="POST">
 		{% csrf_token %}
 	<!--	 form|materializecss -->

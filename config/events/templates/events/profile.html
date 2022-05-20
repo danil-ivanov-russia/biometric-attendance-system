@@ -68,6 +68,7 @@
                     <div class="row">
                         <h4 class="center">Посещённые мероприятия</h4>
                     </div>
+                    {% if user.get_attended_events %}
                         <table>
                             <thead>
                               <tr>
@@ -78,16 +79,18 @@
                             <tbody>
                             {% for event in user.get_attended_events %}
                                 <tr>
-                                    <td><a href="{% url 'events:event' event.pk %}">{{ event.name }}</a></td>
+                                    <td><a href="{% url 'events:event-detail' event.pk %}">{{ event.name }}</a></td>
                                     <td class="right">{{ event.datetime|date:"SHORT_DATE_FORMAT" }}</td>
                                 <tr>
-                            {% empty %}
-                                <div class="card-panel transparent" style="margin: 10px">
-                                    <p class="center">Мероприятий нет.</p>
-                                </div>
+
                             {% endfor %}
                             </tbody>
                         </table>
+                    {% else %}
+                        <div class="card-panel transparent" style="margin: 10px">
+                            <p class="center">Мероприятий нет.</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -21,11 +21,14 @@
      <div class="col m0 l2"></div>
  </div>
 
-
+<div class="row">
+    <a class="left waves-effect waves-light btn" href="{% url 'events:json' event.pk %}">Детали мероприятия в формате json</a>
+</div>
 
 <div id="attendees">
     {% include "events/attendees.html" %}
 </div>
+
 
 
 <script>
