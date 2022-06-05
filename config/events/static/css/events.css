@@ -6,3 +6,11 @@ svg.segno {
 input[type="submit" i]{
   color: white;
 }
+
+html, body, .my-wrapper {
+  height: 100%;
+}
+
+.container {
+  height: 75%;
+}

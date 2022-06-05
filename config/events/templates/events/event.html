@@ -42,33 +42,3 @@ function autorefresh() {
 <script>autorefresh()</script>
 
 {% endblock %}
-
-
-<!--<!DOCTYPE html>-->
-<!--{% load static %}-->
-<!--<html lang="ru">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>{{ event.name }}</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>{{ event.name }}</h1>-->
-<!--{% load qr_code %}-->
-<!--{% qr_from_text request.scheme|add:"://"|add:request.get_host|add:event.get_attendance_url size="L" %}-->
-<!--<h2>Участники</h2>-->
-<!--<div id="attendees" >-->
-<!--    {% include "events/attendees.html" %}-->
-<!--</div>-->
-
-<!--</body>-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
-<!--&lt;!&ndash;<script src="{% static 'js/refresh.js' %}"></script>&ndash;&gt;-->
-<!--<script>-->
-<!--function autorefresh() {-->
-<!--        setInterval(function(){-->
-<!--            $("#attendees").load('{% url 'events:attendees' event.slug %}')-->
-<!--    }, 2000);-->
-<!--}-->
-<!--</script>-->
-<!--<script>autorefresh()</script>-->
-<!--</html>-->

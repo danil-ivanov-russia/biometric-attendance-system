@@ -1,8 +1,9 @@
-from django.forms import ModelForm, CheckboxInput
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from .models import Event, FaceImage, Attendee
 
 
+# Форма создания мероприятия
 class EventForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,6 +15,7 @@ class EventForm(ModelForm):
         fields = ('name', 'timer', )
 
 
+# Форма загрузки изображения
 class ImageForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,6 +26,7 @@ class ImageForm(ModelForm):
         fields = ['image']
 
 
+# Форма регистрации пользователя
 class NewUserForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):

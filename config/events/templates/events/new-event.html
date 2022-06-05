@@ -33,37 +33,16 @@
     <form action="{% url 'events:create' %}" method="post">
         {% csrf_token %}
 		<div class="row" style="margin-bottom: 0px">
-		{{ form.name|materializecss:'active col s8' }}
-		{{ form.timer|materializecss:'active col s4 timepicker ' }}
+		{{ form.name|materializecss:'active col s8 light' }}
+		{{ form.timer|materializecss:'active col s4 timepicker light' }}
         </div>
 		<div class="row">
             <div class="col s12">
-                <button class="right waves-effect waves-light btn" type="submit">Создать мероприятие</button>
+                <button class="right waves-effect waves-light btn-large" type="submit">Начать мероприятие</button>
             </div>
         </div>
     </form>
 
 </div>
 
-
-
-
 {% endblock %}
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="ru">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Создание мероприятия</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<form action="{% url 'events:create' %}" method="post">-->
-<!--    {% csrf_token %}-->
-<!--    {{ form.as_p }}-->
-<!--    <input type="submit" value="Создать мероприятие">-->
-<!--</form>-->
-
-<!--</body>-->
-<!--</html>-->

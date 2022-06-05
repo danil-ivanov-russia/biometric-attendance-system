@@ -33,51 +33,32 @@
 
 	<form action="{% url 'events:create-user' %}" method="POST">
 		{% csrf_token %}
-	<!--	 form|materializecss -->
 		<div class="row" style="margin-bottom: 0px">
-			{{ form.username|materializecss:'col s12 m6 l6' }}
-			{{ form.email|materializecss:'col s12 m6 l6' }}
+			{{ form.username|materializecss:'col s12 m6 l6 light' }}
+			{{ form.email|materializecss:'col s12 m6 l6 light' }}
 		</div>
 		<div class="row" style="margin-bottom: 0px">
-			{{ form.password1|materializecss:'col s12 m6 l6' }}
-			{{ form.password2|materializecss:'col s12 m6 l6' }}
+			{{ form.password1|materializecss:'col s12 m6 l6 light' }}
+			{{ form.password2|materializecss:'col s12 m6 l6 light' }}
 		</div>
 		<div class="row" style="margin-bottom: 0px">
-			{{ form.last_name|materializecss:'col s12 m6 l3' }}
-			{{ form.first_name|materializecss:'col s12 m6 l3' }}
-			{{ form.patronymic|materializecss:'col s12 m12 l6' }}
+			{{ form.last_name|materializecss:'col s12 m6 l3 light' }}
+			{{ form.first_name|materializecss:'col s12 m6 l3 light' }}
+			{{ form.patronymic|materializecss:'col s12 m12 l6 light' }}
 		</div>
 		<div class="row">
 			<div class="col s12">
 				<label>
 					<input type="checkbox" name="share_data" value="unchecked" required/>
-					<span>Согласие на хранение и обработку персональных данных предоставляю</span>
+					<span class="light">Согласие на хранение и обработку персональных данных предоставляю</span>
 				</label>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col s12">
-				<button class="right waves-effect waves-light btn" type="submit">Зарегистрироваться</button>
+				<button class="right waves-effect waves-light btn-large" type="submit">Зарегистрироваться</button>
 			</div>
 		</div>
 	</form>
 </div>
 {% endblock %}
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="ru">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Регистрация</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Регистрация</h1>-->
-
-<!--<form action="{% url 'events:create-user' %}" method="POST">-->
-<!--	{% csrf_token %}-->
-<!--	{{ form.as_p }}-->
-<!--	<input type="submit" value="Зарегистрироваться">-->
-<!--</form>-->
-<!--	{# &lt;!&ndash; <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p> &ndash;&gt; #}-->
-<!--</body>-->
-<!--</html>-->

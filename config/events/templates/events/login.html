@@ -34,36 +34,16 @@
     <form action="{% url 'events:authenticate' %}"  method="POST">
         {% csrf_token %}
 		<div class="row" style="margin-bottom: 0px">
-		{{ form.username|materializecss:'col s12 m6' }}
-		{{ form.password|materializecss:'col s12 m6' }}
+		{{ form.username|materializecss:'col s12 m6 light' }}
+		{{ form.password|materializecss:'col s12 m6 light' }}
         </div>
 
 		<div class="row">
             <div class="col s12">
-                <button class="right waves-effect waves-light btn" type="submit">Войти</button>
+                <button class="right waves-effect waves-light btn-large type="submit">Войти</button>
             </div>
         </div>
     </form>
 
 </div>
 {% endblock %}
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Вход</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Вход</h1>-->
-
-<!--<form action="{% url 'events:authenticate' %}"  method="POST">-->
-<!--    {% csrf_token %}-->
-<!--    {{ form.as_p }}-->
-<!--    <input type="submit" value="Войти">-->
-<!--</form>-->
-
-<!--</body>-->
-<!--</html>-->

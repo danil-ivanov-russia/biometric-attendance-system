@@ -3,23 +3,20 @@
 {% block title %}Система{% endblock %}
 
 {% block content %}
-
-<div class="row">
-    <div class="col s0 m2 l3"></div>
-    <div class="col s12 m8 l6">
-        <div class="center card-panel">
-            <i class="material-icons large">camera</i>
-            <h5>Начните мероприятие</h5>
-            <p class="light center">Нажмите на кнопку ниже, чтобы создать новое мероприятие и начать фиксировать его посещаемость.</p>
-            <a class="center waves-effect waves-light btn" href="{% url 'events:new-event' %}">Создать мероприятие</a>
-        </div>
-    </div>
-    <div class="col s0 m2 l3"></div>
+<br>
+<br>
+<div class="row center" style="margin-bottom: 0px">
+    <i class="teal-text material-icons large">camera</i>
 </div>
-<!--    <ul>-->
-<!--        <li><a href="{% url 'events:login' %}">Логин</a></li>-->
-<!--        <li><a href="{% url 'events:register' %}">Регистрация</a></li>-->
-<!--        <li><a href="{% url 'events:new-event' %}">Создать мероприятие</a></li>-->
-<!--    </ul>-->
+<h2 class="header center teal-text text-lighten-2" style="margin-top: 0px">Начните мероприятие</h2>
+<div class="row center">
+          <h5 class="header col s12 light">Нажмите на кнопку ниже, чтобы создать новое мероприятие и начать фиксировать его посещаемость.</h5>
+</div>
+<div class="row center">
+          <a class="center waves-effect waves-light btn-large" href="{% url 'events:new-event' %}">Создать мероприятие</a>
+</div>
+
+<br>
+<br>
 
 {% endblock %}
