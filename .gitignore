@@ -1,0 +1,4 @@
+venv
+.idea
+config/db.sqlite3
+.env

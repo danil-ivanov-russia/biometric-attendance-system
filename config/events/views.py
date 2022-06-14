@@ -78,7 +78,7 @@ def logout_user(request):
 class NewEventView(LoginRequiredMessageMixin, generic.edit.FormMixin, generic.TemplateView):
     login_url = 'events:login'
     redirect_field_name = 'redirect_to'
-    permission_denied_message = 'Для создание мероприятия требуется авторизация.'
+    permission_denied_message = 'Для создания мероприятия требуется авторизация.'
     template_name = 'events/new-event.html'
     form_class = EventForm
 
@@ -177,18 +177,23 @@ def upload_attendance_photo(request, slug):
             image_datetime = image_instance.get_image_datetime()
             face_encoding = image_instance.get_face_encoding()
             image_instance.delete()
-            if face_encoding is not None and \
-                    (event.datetime - datetime.timedelta(minutes=1)
-                     <= image_datetime
-                     <= event.datetime + event.get_timer_interval()):
-                detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
-                if detected_person is not None:
-                    event.attendees.add(detected_person)
-                    event.save()
-                    messages.success(request, "Вы были распознаны как " + detected_person.get_full_name() + ".")
-                    return HttpResponseRedirect(reverse('events:event-detail', args=(event.pk,)))
+            if face_encoding is not None and image_datetime is not None:
+                print(event.datetime - datetime.timedelta(minutes=1))
+                print(image_datetime)
+                print(event.datetime + event.get_timer_interval())
+                if (event.datetime - datetime.timedelta(minutes=1)
+                        <= image_datetime
+                        <= event.datetime + event.get_timer_interval()):
+                    detected_person = Biometrics.find_biometrics_by_encoding(face_encoding)
+                    if detected_person is not None:
+                        event.attendees.add(detected_person)
+                        event.save()
+                        messages.success(request, "Вы были распознаны как " + detected_person.get_full_name() + ".")
+                        return HttpResponseRedirect(reverse('events:event-detail', args=(event.pk,)))
+                    else:
+                        messages.error(request, "Не найдено совпадений с известными лицами пользователей.")
                 else:
-                    messages.error(request, "Не найдено совпадений с известными лицами пользователей.")
+                    messages.error(request, "Фотография недостаточно новая.")
             else:
                 messages.error(request, "Лицо на фотографии не обнаружено или был загружен неподходящий файл.")
         else:
